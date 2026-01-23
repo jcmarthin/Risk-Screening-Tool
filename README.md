@@ -36,13 +36,16 @@ These instruction will help you to deploy RiSc on a remote/enterpise server and 
 	
 	When risctool docker image is provided as .tar file in this repo. run the command: `docker load -i risctool_docker.tar`. 
 
-	If the docker image is provided through a public registry run docker `docker pull risctool:1.0`. If no tag is specified, Docker will pull the latest tag by default.
+	If the docker image is provided through a registry:
+		1. login into docker registry: `docker login <registry-name>.azurecr.io`
+   		2. run `docker pull <registry>.azurecr.io/<repository>:<tag>`
+	Note: If no tag is specified, Docker will pull the latest tag by default.
 
 	Finally verity that the image is loaded `docker images`.
 
 	Note: You might you need must have privileges (e.g., sudo in bash) to run docker commands including pulling and running docker images. 
 
-3. #### Run the application
+4. #### Run the application
 	
 	Docker compose file `deft.yml` contain all the required configuration settings to run the containers. However, to run the tool remotly (otherwise comment this line using #) you will have to modify and specify the mount path in the docker compose backend volumes  `<your_mount_path>/input:/code/share` to your own path. 
 
@@ -82,14 +85,14 @@ This version comes with a demo datset to test the application. The public input 
 	
 	To transfer them inside the container run:
 	```
-	docker cp demo/input/ deft-backend-1:/code/backend/demo/ 
-	docker cp demo/config.yml deft-backend-1:/code/backend/demo/ && docker cp demo/sysconfig.yml deft-backend-1:/code/backend/demo/
+	docker cp demo/input/ deft_backend_1:/code/backend/demo/ 
+	docker cp demo/config.yml deft_backend_1:/code/backend/demo/ && docker cp demo/sysconfig.yml deft_backend_1:/code/backend/demo/
 	```
-	Access the docker container running this command `docker exec -it deft-backend-1 bash` and make sure data has been correctly transferred using `cd /backend/demo/ && ls -lp`
+	Access the docker container running this command `docker exec -it deft_backend_1 bash` and make sure data has been correctly transferred using `cd /backend/demo/ && ls -lp`
 	
 	To run a case execute `python demo.py` in the /code/backend/demo folder within the container.
 
-	Solution will appear in the container `backend/demo/output` folder. You can export this running `docker cp deft-backend-1:/code/backend/demo/output /home/Risk-Screening-Tool/demo/`
+	Solution will appear in the container `backend/demo/output` folder. You can export this running `docker cp deft_backend_1:/code/backend/demo/output /home/Risk-Screening-Tool/demo/`
 
 3. #### Running the tool remotely (on your local computer)
 	
