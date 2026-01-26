@@ -54,19 +54,15 @@ These instruction will help you to deploy RiSc on a remote/enterpise server and 
 	DB_PASSWORD=your_secure_db_password_here
 	DJANGO_KEY=your_secure_django_secret_key_here
 	```
+    Important: Make sure you update the sysconfig.yml file in your root directory `demo/input/` to align with the username and passowrd specify in this step.
 
-	Note: To generate a strong Django key, you can use `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`	
+    Execute `./up.sh` to run the containers and `./down.sh` to stop and remove them.
 
-	Execute `./up.sh` to run the containers and `./down.sh` to stop and remove them. 
-	
-	Important: if you are running the application for the first time on your server make sure you create a Django superuser:
-	1.  Run the containers `./up.sh` 
+   	Note: If you want to delete exisiting configuration to have a fresh start, including configuration settings from DB/Django run `docker-compose -f deft.yml -p deft down -v --remove-orphans` instead of `./down.sh`. To create your own Django superuser:
 	2.  Access deft-backend-1 container `docker exec -it deft-backend-1 bash`
 	3.  Navigate to Django directory `cd /code/backend`
-	4.  Creare superuser `python manage.py createsuperuser`. 
-	5.  Make sure you update the sysconfig.yml file in your root directory to align with the username and passowrd specify in this step.
-
-	Note: If you want to delete exisiting volumes to have a fresh start, including configuration settings from DB/Django run `docker-compose -f deft.yml -p deft down -v --remove-orphans` instead of `./down.sh`.
+	4.  Creare superuser `python manage.py createsuperuser`.
+	5.  To generate a strong Django key, you can use `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`
 
 ### Running Your First Case: DEMO
 
@@ -79,7 +75,7 @@ This version comes with a demo datset to test the application. The public input 
 
 	Important: If it's the first time running the demo you need to import the clean initial database. From the project root run: `./db_scripts/import_clean_db.sh` this will import the clean-2024.sql with default configuration values (e.g.,weather variables, etc). Note: Some tables might already exist raising an error message
 
-2. #### Running the tool locally (on your server)
+2. #### Running the tool locally (on your VM)
 
 	All input data (Risk-Screening-Tool/demo/input) and configuration settings (Risk-Screening-Tool/demo/config and sysconfig.yml) need to be imported to the docker container. Use `nano` to modify configuration files as required.
 	
@@ -94,7 +90,7 @@ This version comes with a demo datset to test the application. The public input 
 
 	Solution will appear in the container `backend/demo/output` folder. You can export this running `docker cp deft_backend_1:/code/backend/demo/output /home/Risk-Screening-Tool/demo/`
 
-3. #### Running the tool remotely (on your local computer)
+3. #### Running the tool remotely (from your local computer)
 	
 	After changing configuration settings accordingly as decribed in step 1 and configure the mount (heavy files are transferred through this channel).
 	
